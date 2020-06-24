@@ -65,7 +65,6 @@ SESSION_COOKIE_SAMESITE=None
 # as localhost is http not https
 SESSION_COOKIE_SECURE = False if DEBUG else True
 
-CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = ['http://127.0.0.1:8081'] if DEBUG else ['https://convabout.com']
 CORS_ALLOW_CREDENTIALS = True
 
@@ -189,7 +188,8 @@ LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
 
 ALLOWED_HOSTS = ['convabout.herokuapp.com','127.0.0.1']
-EVENTSTREAM_ALLOW_ORIGIN = '*' if DEBUG else 'convabout.herokuapp.com'
+
+EVENTSTREAM_ALLOW_ORIGIN = '*' if DEBUG else 'https://convabout.com'
 print(EVENTSTREAM_ALLOW_ORIGIN)
 EVENTSTREAM_ALLOW_CREDENTIALS = True
 
