@@ -12,6 +12,7 @@ chardet==3.0.4
 constantly==15.1.0
 cryptography==2.9.2
 daphne==2.5.0
+dj-database-url==0.5.0
 Django==3.0.6
 django-cors-headers==3.4.0
 django-eventstream==3.1.0
@@ -25,6 +26,7 @@ idna==2.9
 incremental==17.5.0
 Markdown==3.2.1
 msgpack==0.6.2
+psycopg2-binary==2.8.5
 pubcontrol==3.0.0
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
