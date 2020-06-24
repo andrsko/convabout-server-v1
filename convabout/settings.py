@@ -207,6 +207,6 @@ CHANNEL_LAYERS = {
 # for testing next keys can be used:
 # Site key: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI, Secret key: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe
 # https://developers.google.com/recaptcha/docs/faq#id-like-to-run-automated-tests-with-recaptcha.-what-should-i-do
-GOOGLE_RECAPTCHA_SECRET_KEY = (os.environ.get('LOCALHOST_GOOGLE_RECAPTCHA_SECRET_KEY','')
+GOOGLE_RECAPTCHA_SECRET_KEY = (os.environ.get('LOCALHOST_RECAPTCHA_SECRET_KEY','')
                                if DEBUG
-                               else os.environ.get('CONVABOUT_GOOGLE_RECAPTCHA_SECRET_KEY','') )
+                               else os.environ.get('RECAPTCHA_SECRET_KEY','') )
