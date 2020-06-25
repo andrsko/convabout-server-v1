@@ -23,6 +23,8 @@ from rest_framework.decorators import api_view
 from django_eventstream import send_event
 from django.db.models import BooleanField, Case, When, Value
 from django.db import connection
+import logging
+import sys
 
 @api_view(['POST'])
 def respond(request):
@@ -85,10 +87,17 @@ def number_of_not_seen_messages(request):
         #Q(recipient__session_key=request.session.session_key))
         #& Q(seen=False))
     #grouped = not_seen_recipient_messages.values('post').annotate(pcount=Count('post'))
-    sql= ('SELECT post_id AS id, COUNT(post_id) AS pcount FROM core_MessageModel WHERE seen = 0 AND recipient_id = %s GROUP BY post_id')
+
+    # IMPORTANT production/development: use "seen = false" for postgresql and "seen = 0" for sqllite
+    sql= ('SELECT post_id AS id, COUNT(post_id) AS pcount FROM core_MessageModel WHERE seen = false AND recipient_id = %s GROUP BY post_id')
     cursor = connection.cursor()
-    cursor.execute(sql, [request.session.session_key])
-    rows = cursor.fetchall()
+    try:
+        cursor.execute(sql, [request.session.session_key])
+        rows = cursor.fetchall()
+    except:
+        raise
+    finally:
+        cursor.close()
     return Response(rows, status=status.HTTP_200_OK) 
 
 class MyTalksListAPIView(generics.ListAPIView):
