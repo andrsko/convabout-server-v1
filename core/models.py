@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db.models import (Model, TextField, DateTimeField, ForeignKey, CharField,
-                              BooleanField, CASCADE)
+                              BooleanField, EmailField, CASCADE, SET_NULL)
 from django.contrib.sessions.models import Session
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
@@ -17,7 +17,7 @@ class Post(Model):
                               db_index=True)	
     title = CharField(max_length=150)
     tags = CharField(max_length=150, null=True, blank=True)	
-    body = CharField(max_length=500, null=True, blank=True)	
+    body = CharField(max_length=500, null=True, blank=True)	   
 	
 class MessageModel(Model):
     """
@@ -91,3 +91,11 @@ class MessageModel(Model):
         verbose_name = 'message'
         verbose_name_plural = 'messages'
         ordering = ('-timestamp',)
+
+# submitted through /contact
+class SiteContacted(Model):
+    user = ForeignKey(Session, on_delete=SET_NULL, null=True, blank=True)				  
+    timestamp = DateTimeField('timestamp', auto_now_add=True, editable=False)	
+    message = CharField(max_length=500)
+    name = CharField(max_length=100, null=True, blank=True)	
+    email = EmailField(max_length=100, null=True, blank=True)	 

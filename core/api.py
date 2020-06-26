@@ -9,7 +9,8 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from django.contrib.sessions.models import Session
 from convabout import settings
-from core.serializers import MessageModelSerializer, PostModelSerializer, MyTalksPostModelSerializer
+from core.serializers import (MessageModelSerializer, PostModelSerializer, MyTalksPostModelSerializer, 
+    SiteContactedSerializer)
 from core.models import MessageModel
 from core.models import Post
 from rest_framework.permissions import AllowAny
@@ -201,3 +202,44 @@ class PostModelViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save()
+
+@api_view(['POST'])
+def site_contact(request):
+
+    ''' Begin reCAPTCHA validation '''
+    recaptcha_response = request.data['g-recaptcha-response']
+
+    url = 'https://www.google.com/recaptcha/api/siteverify'
+    values = {
+        'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+        'response': recaptcha_response
+    }
+    data = urllib.parse.urlencode(values).encode()
+    req =  urllib.request.Request(url, data=data)
+    response = urllib.request.urlopen(req)
+    recaptcha_result = json.loads(response.read().decode())
+    ''' End reCAPTCHA validation '''
+    print(recaptcha_result)
+    print(settings.GOOGLE_RECAPTCHA_SECRET_KEY)
+    if recaptcha_result['success']:
+        data = {"message":request.data['message'],
+                "name":request.data['name'],
+                "email":request.data['email']}
+        serializer = SiteContactedSerializer(data=data)
+        print(serializer.is_valid())
+        if serializer.is_valid():
+            site_contacted = serializer.save()
+            if not request.session.session_key:
+                request.session.create() 
+            try:
+                user = Session.objects.get(session_key=request.session.session_key)
+                print(user.session_key)
+                site_contacted.user = user
+                site_contacted.save()
+            except Session.DoesNotExist:
+                pass  
+            return Response(status=status.HTTP_200_OK) 
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)

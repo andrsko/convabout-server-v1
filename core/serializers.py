@@ -1,8 +1,7 @@
 from django.contrib.sessions.models import Session
 from django.shortcuts import get_object_or_404
-from core.models import MessageModel
-from core.models import Post
-from rest_framework.serializers import ModelSerializer, CharField, BooleanField
+from core.models import Post, MessageModel, SiteContacted
+from rest_framework.serializers import ModelSerializer, CharField, BooleanField, EmailField
 from rest_framework import serializers
 from rest_framework import status
 from django_eventstream import send_event
@@ -61,3 +60,8 @@ class MyTalksPostModelSerializer(ModelSerializer):
     class Meta:
         model = Post
         fields = ('id', 'title', 'timestamp', 'body', 'tags', 'is_author')
+
+class SiteContactedSerializer(ModelSerializer):
+    class Meta:
+        model = SiteContacted
+        fields = ['message', 'name', 'email']
