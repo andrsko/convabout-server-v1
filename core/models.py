@@ -13,8 +13,7 @@ class Post(Model):
                       related_name='posts')
     responder = ForeignKey(Session, on_delete=CASCADE, verbose_name='responder',
                       related_name='posts_responded_to', null=True, blank=True)					  
-    timestamp = DateTimeField('timestamp', auto_now_add=True, editable=False,
-                              db_index=True)	
+    timestamp = DateTimeField('timestamp', auto_now_add=True, editable=False)	
     title = CharField(max_length=150)
     tags = CharField(max_length=150, null=True, blank=True)	
     body = CharField(max_length=500, null=True, blank=True)	   
@@ -26,13 +25,12 @@ class MessageModel(Model):
 
     """
     user = ForeignKey(Session, on_delete=CASCADE, verbose_name='user',
-                      related_name='sent_messages', db_index=True, null=True)
+                      related_name='sent_messages', null=True)
     recipient = ForeignKey(Session, on_delete=CASCADE, verbose_name='recipient',
-                           related_name='received_messages', db_index=True, null=True)
+                           related_name='received_messages', null=True)
     post = ForeignKey(Post, on_delete=CASCADE, verbose_name='post',
-                           related_name='messages', db_index=True, null=True)
-    timestamp = DateTimeField('timestamp', auto_now_add=True, editable=False,
-                              db_index=True)
+                           related_name='messages', null=True)
+    timestamp = DateTimeField('timestamp', auto_now_add=True, editable=False)
     body = TextField('body')
 
     seen = BooleanField('seen', default=False)
