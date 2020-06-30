@@ -17,7 +17,10 @@ class Post(Model):
     title = CharField(max_length=150)
     tags = CharField(max_length=150, null=True, blank=True)	
     body = CharField(max_length=500, null=True, blank=True)	   
-	
+
+    class Meta:
+        ordering = ["-timestamp"]
+
 class MessageModel(Model):
     """
     This class represents a chat message. It has a owner (post.user), timestamp and
