@@ -13,7 +13,7 @@ class Post(Model):
                       related_name='posts')
     responder = ForeignKey(Session, on_delete=CASCADE, verbose_name='responder',
                       related_name='posts_responded_to', null=True, blank=True)					  
-    timestamp = DateTimeField('timestamp', auto_now_add=True, editable=False)	
+    timestamp = DateTimeField('timestamp', auto_now_add=False, auto_now = True)	
     title = CharField(max_length=150)
     tags = CharField(max_length=150, null=True, blank=True)	
     body = CharField(max_length=500, null=True, blank=True)	   
