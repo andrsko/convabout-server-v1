@@ -33,22 +33,18 @@ class PostModelSerializer(ModelSerializer):
             msg = _('Problem with session initialization.')
             raise serializers.ValidationError(msg, code='authorization')
 
-        post = Post(user=user,title=validated_data['title'],
-                           body=validated_data['body'],
-                           tags=validated_data['tags'])
+        post = Post(user=user,title=validated_data['title'])
         post.save()
         send_event('home', 'new_post', {
             'id': post.id,
             'title': post.title,
-            'body': post.body,
-            'tags': post.tags,
             'timestamp':post.timestamp
             })
         return post
         
     class Meta:
         model = Post
-        fields = ('id', 'title', 'timestamp', 'body', 'tags')
+        fields = ('id', 'title', 'timestamp')
 
 class MyTalksPostModelSerializer(ModelSerializer):
     is_author = serializers.SerializerMethodField()
@@ -59,7 +55,7 @@ class MyTalksPostModelSerializer(ModelSerializer):
 		
     class Meta:
         model = Post
-        fields = ('id', 'title', 'timestamp', 'body', 'tags', 'is_author')
+        fields = ('id', 'title', 'timestamp', 'is_author')
 
 class SiteContactedSerializer(ModelSerializer):
     class Meta:
