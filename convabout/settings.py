@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'convabout.middleware.SameSiteMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -60,6 +61,7 @@ MIDDLEWARE = [
 ]
 
 #https://stackoverflow.com/questions/58917396/fetch-not-sending-cookies
+#https://community.shopify.com/c/Shopify-APIs-SDKs/SameSite-Cookie-with-Python-Django-and-the-Embedded-App-SDK/td-p/652497
 SESSION_COOKIE_SAMESITE=None
 
 # as localhost is http not https
