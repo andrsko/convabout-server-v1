@@ -189,7 +189,7 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
 
-ALLOWED_HOSTS = ['convabout.herokuapp.com','127.0.0.1']
+ALLOWED_HOSTS = ['convabout.herokuapp.com','127.0.0.1', '.convabout.com']
 
 EVENTSTREAM_ALLOW_ORIGIN = '*' if DEBUG else 'https://convabout.com'
 print(EVENTSTREAM_ALLOW_ORIGIN)
